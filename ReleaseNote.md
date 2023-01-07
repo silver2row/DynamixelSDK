@@ -1,5 +1,17 @@
 # Dynamixel SDK Release Notes
 
+3.7.51 (2021-04-14)
+-------------------
+* Update Matlab, Python, Labview examples
+* Add Sync / Bulk read write ROS examples
+* Contributors: JaehyunShim, David Park, Ashe Kim, Will Son
+
+3.7.41 (2020-08-12)
+-------------------
+* DYNAMIXEL SDK ROS example initial commit.
+* Bug fix for 4.5Mbps support (#430)
+* Contributors: Zerom, Will Son
+
 3.7.31 (2020-07-13)
 -------------------
 * ROS 1 Noetic Ninjemys support

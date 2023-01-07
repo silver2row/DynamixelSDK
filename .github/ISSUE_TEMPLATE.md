@@ -1,64 +1,24 @@
-ISSUE TEMPLATE ver. 1.1.1
+ISSUE TEMPLATE ver. 1.2.0
 
+Please fill this template for more accurate and prompt support.
 
+1. Which DYNAMIXEL SDK version do you use?
+  - ex) `3.4.1`
 
+2. Which programming language/tool do you use?
+  - ex) `C`, `C++`, `C#`, `Python`, `Java`, `MATLAB`, `LABVIEW`, `ROS`, `Arduino`, etc
 
+3. Which operating system do you use?
+  - ex) `Ubuntu 16.04`, `Windows 10`, `OS X 10.14`
 
+3. Which USB serial converter do you use?
+  - ex) `USB2Dynamixel`, `U2D2`, `OpenCM904`, `OpenCR`, etc
 
+4. Which DYNAMIXEL do you use?
+  - ex) `MX-28(2.0)`, `AX-12W`, `XM430-W250`, etc.
 
+5. Have you searched the issue from the closed issue threads?
 
-BE CAREFUL!! FOLLOW THE RULES AS FOLLOWS, OR YOUR ISSUE WILL BE `WON'T FIX` ANYWAY
+6. Please describe the issue in detail
 
-
-
-
-
-
-
-
-
-STEP 1. Check what you are suffering from :
-
-- I'm using `DynamixelSDK ver. 3.5.4`
-
-  - [3.4.1], [3.5.2], etc.
-
-- I'm using `C++` Language
-
-  - [C] / [C++] / [C#] / [Python] / [Java] / [MATLAB] / [LABVIEW] / [ROS] / [Arduino]
-
-- I'm using `USB2Dynamixel2` serial converter
-
-  - [USB2Dynamixel] / [USB2Dynamixel2] or [OpenCM904] / [OpenCR] / [CM700s] / [CM500s] or other ROBOTIS product only
-
-- I'm using `XM430-W210-R`
-
-  - [MX-28], [AX-12W], [H54-200W], etc.
-
-- and I'm having an `issue` like what
-
-  - 'My motor doesn't work', etc.
-
-
-STEP 2. Write `Title` as `[3.5.4][C++][USB2Dynamixel2][XM430-W210-R] Issue : My motor doesn't work`
-
-- Now, if you think :
-
-  - Hey, I'm using RoboPlus2.0, and having an issue, but how can I write that kind of `Title`?
-
-  - Hey, I'm using USB2AX serial converter, and having an issue, but how can I write that kind of `Title`?
-
-  - or more that is not listed on above.
-
-- , You should write your `issue` on http://en.robotis.com/BlueAD/board.php?bbs_id=old_qna
-
-
-STEP 3. Delete all written here, and describe what your problem is
-
-- Any PICTURES or VIDEOS?
-
-  ![](　Link the PICTURES or VIDEOS here, if necessary　)
-
-- Any SOURCE SAMPLES?
-
-  [](　Link the SOURCE SAMPLES here, if necessary　)
+7. How can we reproduce the issue?
