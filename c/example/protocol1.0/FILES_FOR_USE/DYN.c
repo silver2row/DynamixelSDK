@@ -1,20 +1,9 @@
-/*******************************************************************************
-* Copyright 2017 ROBOTIS CO., LTD.
+/*
+* read_write.c
 *
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*******************************************************************************/
-
-/* Author: Ryu Woon Jung (Leon) */
+*  Created on: 2016. 5. 16.
+*      Author: Leon Ryu Woon Jung
+*/
 
 //
 // *********     Read and Write Example      *********
@@ -22,26 +11,26 @@
 //
 // Available DXL model on this example : All models using Protocol 1.0
 // This example is designed for using a Dynamixel MX-28, and an USB2DYNAMIXEL.
-// To use another Dynamixel model, such as X series, see their details in E-Manual(emanual.robotis.com) and edit below "#define"d variables yourself.
-// Be sure that Dynamixel MX properties are already set as %% ID : 1 / Baudnum : 34 (Baudrate : 57600)
+// To use another Dynamixel model, such as X series, see their details in E-Manual(support.robotis.com) and edit below "#define"d variables yourself.
+// Be sure that Dynamixel MX properties are already set as %% ID : 1 / Baudnum : 1 (Baudrate : 1000000 [1M])
 //
 
-#if defined(__linux__) || defined(__APPLE__)
+#ifdef __linux__
+#include <unistd.h>
 #include <fcntl.h>
 #include <termios.h>
-#define STDIN_FILENO 0
 #elif defined(_WIN32) || defined(_WIN64)
 #include <conio.h>
 #endif
 
 #include <stdlib.h>
 #include <stdio.h>
-#include "dynamixel_sdk.h"                                  // Uses Dynamixel SDK library
+#include "dynamixel_sdk.h"                                   // Uses DYNAMIXEL SDK library
 
 // Control table address
-#define ADDR_MX_TORQUE_ENABLE           24                  // Control table address is different in Dynamixel model
-#define ADDR_MX_GOAL_POSITION           30
-#define ADDR_MX_PRESENT_POSITION        0
+#define ADDR_AX_TORQUE_ENABLE           1                  // Control table address is different in Dynamixel model
+#define ADDR_AX_GOAL_POSITION           0
+#define ADDR_AX_PRESENT_POSITION        1023
 
 // Protocol version
 #define PROTOCOL_VERSION                1.0                 // See which protocol version is used in the Dynamixel
@@ -49,13 +38,13 @@
 // Default setting
 
 #define DXL_ID                          1                   // Dynamixel ID: 1
-#define BAUDRATE                        57600
+#define BAUDRATE                        34
 #define DEVICENAME                      "/dev/ttyUSB0"      // Check which port is being used on your controller
-                                                            // ex) Windows: "COM1"   Linux: "/dev/ttyUSB0" Mac: "/dev/tty.usbserial-*"
+                                                              // ex) Windows: "COM1"   Linux: "/dev/ttyUSB0"
 
 #define TORQUE_ENABLE                   1                   // Value for enabling the torque
 #define TORQUE_DISABLE                  0                   // Value for disabling the torque
-#define DXL_MINIMUM_POSITION_VALUE      0                 // Dynamixel will rotate between this value
+#define DXL_MINIMUM_POSITION_VALUE      1                 // Dynamixel will rotate between this value
 #define DXL_MAXIMUM_POSITION_VALUE      1023                // and this value (note that the Dynamixel would not move when the position value is out of movable range. Check e-manual about the range of the Dynamixel you use.)
 #define DXL_MOVING_STATUS_THRESHOLD     10                  // Dynamixel moving status threshold
 
@@ -63,7 +52,7 @@
 
 int getch()
 {
-#if defined(__linux__) || defined(__APPLE__)
+  #ifdef __linux__
   struct termios oldt, newt;
   int ch;
   tcgetattr(STDIN_FILENO, &oldt);
@@ -73,14 +62,14 @@ int getch()
   ch = getchar();
   tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
   return ch;
-#elif defined(_WIN32) || defined(_WIN64)
+  #elif defined(_WIN32) || defined(_WIN64)
   return _getch();
-#endif
+  #endif
 }
 
 int kbhit(void)
 {
-#if defined(__linux__) || defined(__APPLE__)
+  #ifdef __linux__
   struct termios oldt, newt;
   int ch;
   int oldf;
@@ -104,9 +93,9 @@ int kbhit(void)
   }
 
   return 0;
-#elif defined(_WIN32) || defined(_WIN64)
+  #elif defined(_WIN32) || defined(_WIN64)
   return _kbhit();
-#endif
+  #endif
 }
 
 int main()
@@ -121,7 +110,7 @@ int main()
 
   int index = 0;
   int dxl_comm_result = COMM_TX_FAIL;             // Communication result
-  int dxl_goal_position[2] = { DXL_MINIMUM_POSITION_VALUE, DXL_MAXIMUM_POSITION_VALUE };  // Goal position
+  int dxl_goal_position[2] = { DXL_MINIMUM_POSITION_VALUE, DXL_MAXIMUM_POSITION_VALUE };         // Goal position
 
   uint8_t dxl_error = 0;                          // Dynamixel error
   uint16_t dxl_present_position = 0;              // Present position
@@ -152,15 +141,15 @@ int main()
     return 0;
   }
 
-  // Enable Dynamixel Torque
-  write1ByteTxRx(port_num, PROTOCOL_VERSION, DXL_ID, ADDR_MX_TORQUE_ENABLE, TORQUE_ENABLE);
+  // Enable DXL Torque
+  write1ByteTxRx(port_num, PROTOCOL_VERSION, DXL_ID, ADDR_AX_TORQUE_ENABLE, TORQUE_ENABLE);
   if ((dxl_comm_result = getLastTxRxResult(port_num, PROTOCOL_VERSION)) != COMM_SUCCESS)
   {
-    printf("%s\n", getTxRxResult(PROTOCOL_VERSION, dxl_comm_result));
+    getTxRxResult(PROTOCOL_VERSION, dxl_comm_result);
   }
   else if ((dxl_error = getLastRxPacketError(port_num, PROTOCOL_VERSION)) != 0)
   {
-    printf("%s\n", getRxPacketError(PROTOCOL_VERSION, dxl_error));
+    getRxPacketError(PROTOCOL_VERSION, dxl_error);
   }
   else
   {
@@ -170,57 +159,57 @@ int main()
   while (1)
   {
     printf("Press any key to continue! (or press ESC to quit!)\n");
-    if (getch() == ESC_ASCII_VALUE)
-      break;
+      if (getch() == ESC_ASCII_VALUE)
+        break;
 
-    // Write goal position
-    write2ByteTxRx(port_num, PROTOCOL_VERSION, DXL_ID, ADDR_MX_GOAL_POSITION, dxl_goal_position[index]);
-    if ((dxl_comm_result = getLastTxRxResult(port_num, PROTOCOL_VERSION)) != COMM_SUCCESS)
-    {
-      printf("%s\n", getTxRxResult(PROTOCOL_VERSION, dxl_comm_result));
-    }
-    else if ((dxl_error = getLastRxPacketError(port_num, PROTOCOL_VERSION)) != 0)
-    {
-      printf("%s\n", getRxPacketError(PROTOCOL_VERSION, dxl_error));
-    }
-
-    do
-    {
-      // Read present position
-      dxl_present_position = read2ByteTxRx(port_num, PROTOCOL_VERSION, DXL_ID, ADDR_MX_PRESENT_POSITION);
+      // Write goal position
+      write2ByteTxRx(port_num, PROTOCOL_VERSION, DXL_ID, ADDR_AX_GOAL_POSITION, dxl_goal_position[index]);
       if ((dxl_comm_result = getLastTxRxResult(port_num, PROTOCOL_VERSION)) != COMM_SUCCESS)
       {
-        printf("%s\n", getTxRxResult(PROTOCOL_VERSION, dxl_comm_result));
+        getTxRxResult(PROTOCOL_VERSION, dxl_comm_result);
       }
       else if ((dxl_error = getLastRxPacketError(port_num, PROTOCOL_VERSION)) != 0)
       {
-        printf("%s\n", getRxPacketError(PROTOCOL_VERSION, dxl_error));
+        getRxPacketError(PROTOCOL_VERSION, dxl_error);
       }
 
-      printf("[ID:%03d] GoalPos:%03d  PresPos:%03d\n", DXL_ID, dxl_goal_position[index], dxl_present_position);
+      do
+      {
+        // Read present position
+        dxl_present_position = read2ByteTxRx(port_num, PROTOCOL_VERSION, DXL_ID, ADDR_AX_PRESENT_POSITION);
+        if ((dxl_comm_result = getLastTxRxResult(port_num, PROTOCOL_VERSION)) != COMM_SUCCESS)
+        {
+          getTxRxResult(PROTOCOL_VERSION, dxl_comm_result);
+        }
+        else if ((dxl_error = getLastRxPacketError(port_num, PROTOCOL_VERSION)) != 0)
+        {
+          getRxPacketError(PROTOCOL_VERSION, dxl_error);
+        }
 
-    } while ((abs(dxl_goal_position[index] - dxl_present_position) > DXL_MOVING_STATUS_THRESHOLD));
+        printf("[ID:%03d] GoalPos:%03d  PresPos:%03d\n", DXL_ID, dxl_goal_position[index], dxl_present_position);
 
-    // Change goal position
-    if (index == 0)
-    {
-      index = 1;
-    }
-    else
-    {
-      index = 0;
-    }
+      } while ((abs(dxl_goal_position[index] - dxl_present_position) > DXL_MOVING_STATUS_THRESHOLD));
+
+      // Change goal position
+      if (index == 0)
+      {
+        index = 1;
+      }
+      else
+      {
+        index = 0;
+      }
   }
 
   // Disable Dynamixel Torque
-  write1ByteTxRx(port_num, PROTOCOL_VERSION, DXL_ID, ADDR_MX_TORQUE_ENABLE, TORQUE_DISABLE);
+  write1ByteTxRx(port_num, PROTOCOL_VERSION, DXL_ID, ADDR_AX_TORQUE_ENABLE, TORQUE_DISABLE);
   if ((dxl_comm_result = getLastTxRxResult(port_num, PROTOCOL_VERSION)) != COMM_SUCCESS)
   {
-    printf("%s\n", getTxRxResult(PROTOCOL_VERSION, dxl_comm_result));
+    getTxRxResult(PROTOCOL_VERSION, dxl_comm_result);
   }
   else if ((dxl_error = getLastRxPacketError(port_num, PROTOCOL_VERSION)) != 0)
   {
-    printf("%s\n", getRxPacketError(PROTOCOL_VERSION, dxl_error));
+    getRxPacketError(PROTOCOL_VERSION, dxl_error);
   }
 
   // Close port
