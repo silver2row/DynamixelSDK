@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 
 from setuptools import setup, find_packages
 import platform
@@ -13,5 +14,6 @@ setup(
     url='https://github.com/ROBOTIS-GIT/DynamixelSDK',
     author='Leon Jung',
     author_email='rwjung@robotis.com',
-    install_requires=['pyserial']
+    install_requires=['pyserial'],
+    CROSS_COMPILE='/usr/bin/aarch64-linux-gnu-'
 )
