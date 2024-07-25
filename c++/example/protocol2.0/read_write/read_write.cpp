@@ -49,6 +49,7 @@
 // #define P_SERIES  // PH54, PH42, PM54
 // #define XL320  // [WARNING] Operating Voltage : 7.4V
 // #define MX_SERIES // MX series with 2.0 firmware update.
+// #define Y_SERIES // Y70, Y80
 
 // Control table address
 #if defined(X_SERIES) || defined(MX_SERIES)
@@ -79,6 +80,13 @@
   #define MINIMUM_POSITION_LIMIT      0  // Refer to the CW Angle Limit of product eManual
   #define MAXIMUM_POSITION_LIMIT      1023  // Refer to the CCW Angle Limit of product eManual
   #define BAUDRATE                    1000000  // Default Baudrate of XL-320 is 1Mbps
+#elif defined(Y_SERIES)
+  #define ADDR_TORQUE_ENABLE          512  // Control table address is different in DYNAMIXEL model
+  #define ADDR_GOAL_POSITION          532
+  #define ADDR_PRESENT_POSITION       552
+  #define MINIMUM_POSITION_LIMIT      -262144  // Refer to the Minimum Position Limit of product eManual
+  #define MAXIMUM_POSITION_LIMIT      262144  // Refer to the Maximum Position Limit of product eManual
+  #define BAUDRATE                    57600  
 #endif
 
 // DYNAMIXEL Protocol Version (1.0 / 2.0)
