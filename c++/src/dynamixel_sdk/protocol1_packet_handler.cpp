@@ -370,6 +370,11 @@ int Protocol1PacketHandler::clearMultiTurn(PortHandler *port, uint8_t id, uint8_
   return COMM_NOT_AVAILABLE;
 }
 
+int Protocol1PacketHandler::clearError(PortHandler *port, uint8_t id, uint8_t *error)
+{
+  return COMM_NOT_AVAILABLE;
+}
+
 int Protocol1PacketHandler::factoryReset(PortHandler *port, uint8_t id, uint8_t option, uint8_t *error)
 {
   uint8_t txpacket[6]         = {0};
