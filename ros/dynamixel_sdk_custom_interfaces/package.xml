@@ -5,6 +5,7 @@
   <version>4.1.0</version>
   <description>ROS 2 custom interface examples using ROBOTIS DYNAMIXEL SDK</description>
   <maintainer email="pyo@robotis.com">Pyo</maintainer>
+  <maintainer email="thlim@robotis.com">Taehun Lim</maintainer>
   <license>Apache 2.0</license>
   <url type="website">http://wiki.ros.org/dynamixel_sdk</url>
   <url type="repository">https://github.com/ROBOTIS-GIT/DynamixelSDK</url>
